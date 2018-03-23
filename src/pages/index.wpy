@@ -68,10 +68,9 @@
     onLoad(){
       let self = this;
       wepy.request({
-        url:"http://musicapi.leanapp.cn/banner",
+        url:"http://127.0.0.1:3000/banner",
         success:function(res){
-          console.log(res.data.banners)
-          res.data.banners.forEach((item,index)=>imgUrls.push(item.pic));
+          res.data.banners.forEach((item,index)=>self.imgUrls.push(item.pic));
           self.$apply();
         }
       })
