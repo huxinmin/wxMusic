@@ -1,0 +1,81 @@
+<style lang="less">
+  .subHeader{
+    width:100%;
+    display:flex;
+    justify-content:space-around;
+    font-size:32rpx;
+    height:100rpx;
+    li{
+      height:100rpx;
+      width:200rpx;
+      text-align:center;
+      line-height:100rpx;
+      display:inline-block;
+    }
+    .active{
+      border-bottom:solid 6rpx #d33a32; 
+    }
+  }
+  .swiper{
+    width:100%;
+    image{
+      width:100%;
+    }
+  }
+</style>
+<template>
+  <view class="container">
+    <header />
+    <ul class="subHeader">
+      <li class="active">发现</li>
+      <li>我的</li>
+      <li>电台</li>
+    </ul>
+
+    <view class="swiper">
+      <swiper indicator-color="{{indicatorClor}}" indicator-active-color="{{indicatorActiveColor}}" indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}" circular="{{circular}}">
+        <repeat for="{{imgUrls}}" key="index" index="index" item="item">
+          <swiper-item>
+           <image src="{{item}}" class="slide-image" width="355" height="150"/>
+          </swiper-item>
+        </repeat>
+      </swiper>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import Header from '../components/header'
+
+  export default class Index extends wepy.page {
+    config = {
+      navigationBarTitleText: '音乐'
+    }
+    components = {
+      header: Header, 
+    }
+    data= {
+      imgUrls: [],
+      indicatorDots: true,
+      autoplay: true,
+      interval: 2000,
+      duration: 500,
+      circular:true,
+      indicatorClor:"#dddddd",
+      indicatorActiveColor:"#df605a"
+      } 
+    onLoad(){
+      let self = this;
+      wepy.request({
+        url:"http://musicapi.leanapp.cn/banner",
+        success:function(res){
+          console.log(res.data.banners)
+          res.data.banners.forEach((item,index)=>imgUrls.push(item.pic));
+          self.$apply();
+        }
+      })
+    }
+  
+}
+</script>

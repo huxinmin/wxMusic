@@ -1,0 +1,41 @@
+<style lang="less">
+ .header{
+  box-sizing:border-box;
+  width:100%;
+  background:#d33a32;
+  height:160rpx;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding-left:40rpx;
+  padding-right:40rpx;
+  .main{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    width:50%;
+  }
+  image{
+    width:64rpx;
+    height:64rpx;
+  }
+ }
+</style>
+<template>
+  <view class="header">
+    <image src="../assets/images/category.png" /></image>
+    <view class="main">
+      <image src="../assets/images/video.png"></image>
+      <image src="../assets/images/music.png"></image>
+      <image src="../assets/images/user.png"></image>
+    </view>
+    <image src="../assets/images/search.png"></image>
+  </view>
+</template>
+<script>
+  import wepy from 'wepy'
+
+  export default class Header extends wepy.component {
+   
+  }
+</script>
