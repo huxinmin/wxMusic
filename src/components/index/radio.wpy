@@ -1,0 +1,13 @@
+<style lang="less">
+
+</style>
+<template>
+  <view class="radio">radio</view>
+</template>
+<script>
+  import wepy from 'wepy'
+
+  export default class Radio extends wepy.component {
+    
+  }
+</script>

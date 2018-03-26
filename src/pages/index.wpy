@@ -1,11 +1,18 @@
 <style lang="less">
-  
+  .show{
+    display:block;
+  }
+  .hide{
+    display:none;
+  }
 </style>
 <template>
   <view class="container">
     <header />
     <subHeader />
-    <discover />
+    <discover class="{{activeMenu==0?'show':'hide'}}"/>
+    <mine class="{{activeMenu==1?'show':'hide'}}"/>
+    <radio class="{{activeMenu==2?'show':'hide'}}"/>
   </view>
 </template>
 
@@ -15,18 +22,29 @@
   import Urls from '../mixins/urls';
   import SubHeader from '../components/common/subHeader'
   import Discover from '../components/index/discover'
+  import Mine from '../components/index/mine'
+  import Radio from '../components/index/radio'
 
   export default class Index extends wepy.page {
     config = {
       navigationBarTitleText: '音乐'
     }
+    data = {
+      activeMenu:0
+    }
     components = {
       header: Header, 
       subHeader: SubHeader,
-      discover:Discover
+      discover:Discover,
+      radio:Radio,
+      mine:Mine
     }
     mixins = [Urls]
-   
+    events={
+      switchMenu:(index, $event)=>{
+        this.activeMenu = index;
+      }
+    }
    
   
 }

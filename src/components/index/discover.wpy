@@ -1,4 +1,7 @@
 <style lang="less">
+.discover{
+  width:100%;
+}
  .swiper{
     width:100%;
     image{
@@ -100,6 +103,7 @@
   }
 </style>
 <template>
+  <view class="discover">
    <view class="swiper">
       <swiper indicator-color="{{swiper.indicatorClor}}" indicator-active-color="{{swiper.indicatorActiveColor}}" indicator-dots="{{swiper.indicatorDots}}" autoplay="{{swiper.autoplay}}" interval="{{swiper.interval}}" duration="{{swiper.duration}}" circular="{{swiper.circular}}">
         <repeat for="{{swiper.imgUrls}}" key="index" index="index" item="item">
@@ -132,6 +136,7 @@
         </repeat>
       </ul>
     </view>
+  </view>
 </template>
 <script>
   import wepy from 'wepy'

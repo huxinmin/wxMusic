@@ -52,6 +52,7 @@
         let index = ev.target.dataset.index;
         this.barLeft = (3.5 + 33*index)+"%";
         this.activeNav = index;
+        this.$emit("switchMenu", index);
       }
     }
   }
