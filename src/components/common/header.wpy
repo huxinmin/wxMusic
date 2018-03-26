@@ -23,13 +23,13 @@
 </style>
 <template>
   <view class="header">
-    <image src="../assets/images/category.png" /></image>
+    <image src="../../assets/images/category.png" /></image>
     <view class="main">
-      <image src="../assets/images/video.png"></image>
-      <image src="../assets/images/music.png"></image>
-      <image src="../assets/images/user.png"></image>
+      <image src="../../assets/images/video.png"></image>
+      <image src="../../assets/images/music.png"></image>
+      <image src="../../assets/images/user.png"></image>
     </view>
-    <image src="../assets/images/search.png"></image>
+    <image src="../../assets/images/search.png"></image>
   </view>
 </template>
 <script>

@@ -14,7 +14,7 @@
       background: #d33a32;
       transition: left .5s;
     }
-    navigator{
+    li{
       height:100rpx;
       width:200rpx;
       text-align:center;
@@ -27,12 +27,12 @@
   }
 </style>
 <template>
- <view class="subHeader">
+ <ul class="subHeader">
   <repeat for="{{nav}}" index="index" key="index" item="item">
-    <navigator data-index="{{index}}" @tap="switchMenu" class="{{index==activeNav? 'active':'nonActive'}}" url="{{item.url}}">{{item.name}}</navigator>
+    <li  data-index="{{index}}" @tap="switchMenu" class="{{index==activeNav? 'active':'nonActive'}}">{{item.name}}</li>
   </repeat>
     <view class="bar" style="left:{{barLeft}}"></view>
-  </view>
+  </ul>
 </template>
 <script>
   import wepy from 'wepy'
@@ -41,9 +41,9 @@
     data = {
       barLeft: "3.5%",
       nav:[
-        {name:"发现", url:"/discover"},
-        {name:"我的", url:"/mine"},
-        {name:"电台", url:"radio"}
+        {name:"发现"},
+        {name:"我的"},
+        {name:"电台"}
       ],
       activeNav:0
     }
