@@ -26,7 +26,7 @@
     <image src="../assets/images/category.png" /></image>
     <view class="main">
       <image src="../assets/images/video.png"></image>
-      <image style="width:68rpx; height:68rpx;" src="../assets/images/music.png"></image>
+      <image src="../assets/images/music.png"></image>
       <image src="../assets/images/user.png"></image>
     </view>
     <image src="../assets/images/search.png"></image>

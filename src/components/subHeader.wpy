@@ -1,0 +1,58 @@
+<style lang="less">
+ .subHeader{
+    width:100%;
+    display:flex;
+    justify-content:space-around;
+    font-size:32rpx;
+    height:100rpx;
+    position: relative;
+    .bar{
+      position: absolute;
+      width: 200rpx;
+      height: 6rpx;
+      bottom: 0;
+      background: #d33a32;
+      transition: left .5s;
+    }
+    navigator{
+      height:100rpx;
+      width:200rpx;
+      text-align:center;
+      line-height:100rpx;
+      display:inline-block;
+    }
+    .active{
+      color: #d33a32;
+    }
+  }
+</style>
+<template>
+ <view class="subHeader">
+  <repeat for="{{nav}}" index="index" key="index" item="item">
+    <navigator data-index="{{index}}" @tap="switchMenu" class="{{index==activeNav? 'active':'nonActive'}}" url="{{item.url}}">{{item.name}}</navigator>
+  </repeat>
+    <view class="bar" style="left:{{barLeft}}"></view>
+  </view>
+</template>
+<script>
+  import wepy from 'wepy'
+
+  export default class SubHeader extends wepy.component {
+    data = {
+      barLeft: "3.5%",
+      nav:[
+        {name:"发现", url:"/discover"},
+        {name:"我的", url:"/mine"},
+        {name:"电台", url:"radio"}
+      ],
+      activeNav:0
+    }
+    methods={
+      switchMenu(ev){
+        let index = ev.target.dataset.index;
+        this.barLeft = (3.5 + 33*index)+"%";
+        this.activeNav = index;
+      }
+    }
+  }
+</script>

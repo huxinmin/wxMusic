@@ -1,21 +1,4 @@
 <style lang="less">
-  .subHeader{
-    width:100%;
-    display:flex;
-    justify-content:space-around;
-    font-size:32rpx;
-    height:100rpx;
-    li{
-      height:100rpx;
-      width:200rpx;
-      text-align:center;
-      line-height:100rpx;
-      display:inline-block;
-    }
-    .active{
-      border-bottom:solid 6rpx #d33a32; 
-    }
-  }
   .swiper{
     width:100%;
     image{
@@ -119,11 +102,7 @@
 <template>
   <view class="container">
     <header />
-    <ul class="subHeader">
-      <li class="active">发现</li>
-      <li>我的</li>
-      <li>电台</li>
-    </ul>
+    <subHeader />
 
     <view class="swiper">
       <swiper indicator-color="{{swiper.indicatorClor}}" indicator-active-color="{{swiper.indicatorActiveColor}}" indicator-dots="{{swiper.indicatorDots}}" autoplay="{{swiper.autoplay}}" interval="{{swiper.interval}}" duration="{{swiper.duration}}" circular="{{swiper.circular}}">
@@ -165,6 +144,7 @@
   import wepy from 'wepy'
   import Header from '../components/header'
   import Urls from '../mixins/urls';
+  import SubHeader from '../components/subHeader'
 
   export default class Index extends wepy.page {
     config = {
@@ -172,6 +152,7 @@
     }
     components = {
       header: Header, 
+      subHeader: SubHeader
     }
     mixins = [Urls]
     data= {
