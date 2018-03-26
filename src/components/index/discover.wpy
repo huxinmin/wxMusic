@@ -15,7 +15,7 @@
     align-items:center;
     justify-content:space-around;
     background:#f3f4f6;
-    li{
+    navigator{
       width:264rpx;
       height:200rpx;
       display:flex;
@@ -114,12 +114,12 @@
       </swiper>
     </view>
 
-    <ul class="main-nav">
-      <li><view><image src="../../assets/images/radio.png"></image></view><text>私人FM</text></li>
-      <li><view><image src="../../assets/images/calendar.png"></image></view><text>开启每日推...</text></li>
-      <li><view><image src="../../assets/images/list.png"></image></view><text>歌单</text></li>
-      <li><view><image src="../../assets/images/rank.png"></image></view><text>排行榜</text></li>
-    </ul>
+    <view class="main-nav">
+      <navigator url="fm"><view><image src="../../assets/images/radio.png"></image></view><text>私人FM</text></navigator>
+      <navigator><view><image src="../../assets/images/calendar.png"></image></view><text>开启每日推...</text></navigator>
+      <navigator><view><image src="../../assets/images/list.png"></image></view><text>歌单</text></navigator>
+      <navigator><view><image src="../../assets/images/rank.png"></image></view><text>排行榜</text></navigator>
+    </view>
     
     <view class="recomand-music">
       <view class="title"><view class="bar"></view><text>推荐歌单 </text><image src="../../assets/images/rightArrow.png"></image></view>

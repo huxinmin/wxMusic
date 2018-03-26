@@ -1,0 +1,69 @@
+<style lang="less">
+  
+</style>
+<template>
+  <view class="container">
+    <image src="{{music.album.picUrl}}"></image>
+    <text>{{music.name}}</text>
+    <audio poster="{{music.album.picUrl}}" name="{{music.name}}" src="{{url}}" id="myAudio" controls loop></audio>
+
+    <button type="primary" bindtap="audioPlay">播放</button>
+    <button type="primary" bindtap="audioPause">暂停</button>
+    <button type="primary" bindtap="audio14">设置当前播放时间为14秒</button>
+    <button type="primary" bindtap="audioStart">回到开头</button>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import Urls from '../mixins/urls';
+
+  export default class Fm extends wepy.page {
+    config = {
+      navigationBarTitleText: '私人FM'
+    }
+    data = {
+      music:{},
+      url:""
+    }
+    mixins = [Urls]
+
+    methods = {
+      audioPlay() {
+        this.audioCtx.play()
+      },
+      audioPause() {
+        this.audioCtx.pause()
+      },
+      audio14() {
+        this.audioCtx.seek(14)
+      },
+      audioStart() {
+        this.audioCtx.seek(0)
+     }
+    }
+
+    onShow (){
+      //注意onShow只在page才存在，所以无法使用
+      let self = this;
+      wepy.request({
+        url:self.personalFmUrl,
+        success:function(res){
+          self.music = res.data.data[0];
+          console.log(self.music)
+          wepy.request({
+            url:self.musicUrl+self.music.id,
+            success:function(response){
+              console.log(response)
+              self.url = response.data.data[0].url;
+              console.log(self.url)
+              self.$apply();
+           }
+          });
+        }
+      });
+      this.audioCtx = wx.createAudioContext('myAudio')
+      
+    }
+}
+</script>
