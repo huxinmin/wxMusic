@@ -1,26 +1,77 @@
 <style lang="less">
-  
+  .rank-list{
+    image{
+      width:100%;
+    }
+    .rank-songs-item{
+      display: flex;
+      padding-left: 40rpx;
+      padding-right: 40rpx;
+      justify-content: space-between;
+      align-items: center;
+      height:160rpx;
+      border-bottom:solid 4rpx #d9dadc;
+    }
+    .song-thumbnail{
+      width:64rpx;
+      height:64rpx;
+    }
+    .play{
+      width:48rpx;
+      height:48rpx;
+    }
+    .song-name{
+      font-size:54rpx;
+    }
+    .song-artist{
+      font-size:40rpx;
+      color:#78797b;
+    }
+    .song-index{
+      width:100rpx;
+    }
+  }
 </style>
 <template>
-  <view class="container">
-    rank
+  <view class="rank-list">
+    <image mode="widthFix" src="{{img}}"></image>
+    <view class="rank-songs-group">
+      <repeat for="{{songs}}" key="index" index="index" item="item">
+        <view class="rank-songs-item" data-index="{{index}}" id="{{item.id}}">
+          <view class="song-index">{{index}}</view>
+          <image src="{{item.al.picUrl}}" lazy-load class="song-thumbnail" mode="widthFix"></image>
+          <view>
+            <view class="song-name">{{item.name}}</view>
+            <text class="song-artist">{{item.ar[0].name}}</text>
+          </view>
+          <image class="play" mode="widthFix" src="../assets/images/play.png"></image>
+        </view>
+      </repeat>
+    </view>
   </view>
 </template>
 
 <script>
   import wepy from 'wepy'
- 
+  import Urls from '../mixins/urls';
 
   export default class Rank extends wepy.page {
     data = {
-      name:""
+      img:"",
+      songs:[]
     }
+    mixins = [Urls]
     onLoad(option){
-      this.name = option.name
-      wx.setNavigationBarTitle({
-        title: option.name
+      let self= this;
+      let url = this.baseUrl+"/top/list?idx="+option.id;
+      wepy.setNavigationBarTitle({title: option.name})
+      wx.request({
+        url:url,
+        success:function(res){
+          self.img = res.data.playlist.coverImgUrl;
+          self.songs = res.data.playlist.tracks;
+        }
       })
-      console.log(option)
     }
 }
 </script>

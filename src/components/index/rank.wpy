@@ -38,8 +38,9 @@
     mixins = [LocalData]
     methods ={
     	navigateTo(ev){
+    		let dataset = ev.currentTarget.dataset;
     		wepy.navigateTo({
- 				url: 'rank?id='+ev.target.dataset.index+"&name="+ev.target.dataset.name
+ 				url: 'rank?id='+dataset.index+"&name="+dataset.name
 			})
     	}
     }
