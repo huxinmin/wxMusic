@@ -23,7 +23,7 @@
 <template>
   <view class="rank-group">
   	<repeat for="{{rank}}" key="index" index="index" item="item">
-  		<view class="rank-item" data-url="{{item.url}}" data-index="{{index}}" @tap="navigateTo">
+  		<view class="rank-item" data-name="{{item.name}}" data-index="{{index}}" @tap="navigateTo">
   		  <text>{{item.name}}</text>
   		  <image src="../../assets/images/rightArrow.png"></image>
   		</view>
@@ -39,7 +39,7 @@
     methods ={
     	navigateTo(ev){
     		wepy.navigateTo({
- 				url: 'test?id='+ev.target.dataset.index
+ 				url: 'rank?id='+ev.target.dataset.index+"&name="+ev.target.dataset.name
 			})
     	}
     }

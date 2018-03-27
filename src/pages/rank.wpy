@@ -1,0 +1,26 @@
+<style lang="less">
+  
+</style>
+<template>
+  <view class="container">
+    rank
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+ 
+
+  export default class Rank extends wepy.page {
+    data = {
+      name:""
+    }
+    onLoad(option){
+      this.name = option.name
+      wx.setNavigationBarTitle({
+        title: option.name
+      })
+      console.log(option)
+    }
+}
+</script>

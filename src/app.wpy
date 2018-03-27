@@ -26,7 +26,8 @@ export default class extends wepy.app {
   config = {
     pages: [
       'pages/index',
-      'pages/play'
+      'pages/play',
+      'pages/rank'
     ],
     window: {
       backgroundTextStyle: 'light',
