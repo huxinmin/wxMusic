@@ -3,9 +3,9 @@
 </style>
 <template>
   <view class="container">
-    <image src="{{music.album.picUrl}}"></image>
+    <image src="{{imgUrl}}"></image>
     <text>{{music.name}}</text>
-    <audio poster="{{music.album.picUrl}}" name="{{music.name}}" src="{{url}}" id="myAudio" controls loop></audio>
+    <audio poster="{{imgUrl}}" name="{{name}}" src="{{url}}" id="myAudio" controls loop></audio>
 
     <button type="primary" bindtap="audioPlay">播放</button>
     <button type="primary" bindtap="audioPause">暂停</button>
@@ -19,12 +19,11 @@
   import Urls from '../mixins/urls';
 
   export default class Fm extends wepy.page {
-    config = {
-      navigationBarTitleText: '播放'
-    }
     data = {
-      music:{},
-      url:""
+      imgUrl:"",
+      name:{},
+      url:"",
+      audioCtx:""
     }
     mixins = [Urls]
 
@@ -42,28 +41,19 @@
         this.audioCtx.seek(0)
      }
     }
-
-    onShow (){
-      //注意onShow只在page才存在，所以无法使用
-      let self = this;
-      wepy.request({
-        url:self.personalFmUrl,
-        success:function(res){
-          self.music = res.data.data[0];
-          console.log(self.music)
-          wepy.request({
-            url:self.musicUrl+self.music.id,
-            success:function(response){
-              console.log(response)
-              self.url = response.data.data[0].url;
-              console.log(self.url)
-              self.$apply();
-           }
-          });
-        }
+    onLoad(option){
+      let self= this;
+      let url = this.baseUrl+"/music/url?id="+option.id;
+      wepy.setNavigationBarTitle({title: option.name})
+      this.imgUrl = option.imgUrl
+      this.name = option.name
+      console.log(url)
+      wepy.request(url).then((res)=>{
+        console.log(res)
+        self.url = res.data.data[0].url;
+        self.$apply();
       });
       this.audioCtx = wx.createAudioContext('myAudio')
-      
     }
 }
 </script>

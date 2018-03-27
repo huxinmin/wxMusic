@@ -13,22 +13,37 @@
       border-bottom:solid 4rpx #d9dadc;
     }
     .song-thumbnail{
-      width:64rpx;
-      height:64rpx;
+      width:80rpx;
+      height:80rpx;
     }
     .play{
       width:48rpx;
       height:48rpx;
     }
     .song-name{
-      font-size:54rpx;
+      font-size:40rpx;
+      width: 100%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      height: 50rpx;
     }
     .song-artist{
-      font-size:40rpx;
+      font-size:30rpx;
       color:#78797b;
     }
     .song-index{
-      width:100rpx;
+      width:80rpx;
+      color: #999;
+    }
+    .song-info{
+      width:460rpx;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .song-info-right{
+      width: 360rpx;
     }
   }
 </style>
@@ -37,12 +52,14 @@
     <image mode="widthFix" src="{{img}}"></image>
     <view class="rank-songs-group">
       <repeat for="{{songs}}" key="index" index="index" item="item">
-        <view class="rank-songs-item" data-index="{{index}}" id="{{item.id}}">
+        <view class="rank-songs-item" data-index="{{index}}" id="{{item.id}}" data-name="{{item.name}}" data-imgUrl="{{item.al.picUrl}}" @tap="navigateTo">
           <view class="song-index">{{index}}</view>
-          <image src="{{item.al.picUrl}}" lazy-load class="song-thumbnail" mode="widthFix"></image>
-          <view>
-            <view class="song-name">{{item.name}}</view>
-            <text class="song-artist">{{item.ar[0].name}}</text>
+          <view class="song-info">
+            <image src="{{item.al.picUrl}}" lazy-load class="song-thumbnail" mode="widthFix"></image>
+            <view class="song-info-right">
+              <view class="song-name">{{item.name}}</view>
+             <text class="song-artist">{{item.ar[0].name}}</text>
+            </view>
           </view>
           <image class="play" mode="widthFix" src="../assets/images/play.png"></image>
         </view>
@@ -61,17 +78,26 @@
       songs:[]
     }
     mixins = [Urls]
+    methods ={
+      navigateTo(ev){
+        let dataset = ev.currentTarget.dataset;
+        console.log(ev)
+        wepy.navigateTo({
+          url: 'play?id='+ev.currentTarget.id+"&name="+dataset.name+"&index="+dataset.index+"&imgUrl="+dataset.imgUrl
+        })
+      }
+    }
+
     onLoad(option){
       let self= this;
       let url = this.baseUrl+"/top/list?idx="+option.id;
       wepy.setNavigationBarTitle({title: option.name})
-      wx.request({
-        url:url,
-        success:function(res){
-          self.img = res.data.playlist.coverImgUrl;
-          self.songs = res.data.playlist.tracks;
-        }
-      })
+      wepy.request(url).then((res) => {
+        console.log(res)
+        self.img = res.data.playlist.coverImgUrl;
+        self.songs = res.data.playlist.tracks;
+        self.$apply();
+      });
     }
 }
 </script>
