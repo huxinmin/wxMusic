@@ -1,14 +1,47 @@
 <style lang="less">
-
+  .rank-group{
+  	width: 100%;
+  }
+  .rank-item{
+  	padding-left: 80rpx;
+  	padding-right:80rpx;
+  	display: flex;
+  	justify-content: space-between;
+  	align-items: center;
+  	box-sizing: border-box;
+  	line-height: 100rpx;
+  	font-size:30rpx;
+  	height:100rpx;
+  	width:100%;
+  	border-bottom: solid 2rpx #eee;
+  	image{
+  		width:32rpx;
+  		height:32rpx;
+  	}
+  }
 </style>
 <template>
-  <view>排行榜</view>
+  <view class="rank-group">
+  	<repeat for="{{rank}}" key="index" index="index" item="item">
+  		<view class="rank-item" data-url="{{item.url}}" data-index="{{index}}" @tap="navigateTo">
+  		  <text>{{item.name}}</text>
+  		  <image src="../../assets/images/rightArrow.png"></image>
+  		</view>
+  	</repeat>
+  </view>
 </template>
 <script>
   import wepy from 'wepy'
-  import Urls from '../../mixins/urls';
+  import LocalData from '../../mixins/localData';
 
   export default class Rank extends wepy.component {
-    
+    mixins = [LocalData]
+    methods ={
+    	navigateTo(ev){
+    		wepy.navigateTo({
+ 				url: 'test?id='+ev.target.dataset.index
+			})
+    	}
+    }
   }
 </script>

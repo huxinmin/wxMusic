@@ -2,7 +2,7 @@
 
 </style>
 <template>
-  <view class="radio">radio</view>
+  <view class="search">搜索</view>
 </template>
 <script>
   import wepy from 'wepy'

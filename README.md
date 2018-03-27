@@ -12,3 +12,10 @@ node app.js
 ## 依赖
 `wepy`腾讯的开源小程序框架
 `NeteaseCloudMusicApi`第三方的网易云音乐 Nodejs API，地址为[`NeteaseCloudMusicApi`](https://github.com/Binaryify/NeteaseCloudMusicApi)
+
+## 学到的知识点
+1. scroll-view 中的需要滑动的元素不可以用 float 浮动；
+2. scroll-view 中的包裹需要滑动的元素的大盒子用 display:flex; 是没有作用的；
+3. scroll-view 中的需要滑动的元素要用 dislay:inline-block; 进行元素的横向编排；
+4. 包裹 scroll-view 的大盒子有明确的宽和加上样式-->  overflow:hidden;white-space:nowrap;
+5. swiper组件必须放在最外层，并且不能使用任何嵌套，无法内嵌组件

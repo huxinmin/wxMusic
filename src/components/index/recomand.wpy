@@ -2,7 +2,7 @@
 
 </style>
 <template>
-  <view class="mine">mine</view>
+  <view class="recomand">每日推荐</view>
 </template>
 <script>
   import wepy from 'wepy'

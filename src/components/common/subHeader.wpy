@@ -42,7 +42,7 @@
       barLeft: "3.5%",
       nav:[
         {name:"排行榜"},
-        {name:"推荐"},
+        {name:"每日推荐"},
         {name:"搜索"}
       ],
       activeNav:0
