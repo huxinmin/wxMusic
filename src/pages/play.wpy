@@ -20,7 +20,7 @@
 
   export default class Fm extends wepy.page {
     config = {
-      navigationBarTitleText: '私人FM'
+      navigationBarTitleText: '播放'
     }
     data = {
       music:{},

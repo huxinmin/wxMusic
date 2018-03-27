@@ -26,7 +26,7 @@ export default class extends wepy.app {
   config = {
     pages: [
       'pages/index',
-      'pages/fm'
+      'pages/play'
     ],
     window: {
       backgroundTextStyle: 'light',

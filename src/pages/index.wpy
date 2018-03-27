@@ -8,36 +8,33 @@
 </style>
 <template>
   <view class="container">
-    <header />
     <subHeader />
-    <discover class="{{activeMenu==0?'show':'hide'}}"/>
-    <mine class="{{activeMenu==1?'show':'hide'}}"/>
-    <radio class="{{activeMenu==2?'show':'hide'}}"/>
+    <rank class="{{activeMenu==0?'show':'hide'}}"/>
+    <recomand class="{{activeMenu==1?'show':'hide'}}"/>
+    <search class="{{activeMenu==2?'show':'hide'}}"/>
   </view>
 </template>
 
 <script>
   import wepy from 'wepy'
-  import Header from '../components/common/header'
   import Urls from '../mixins/urls';
   import SubHeader from '../components/common/subHeader'
-  import Discover from '../components/index/discover'
-  import Mine from '../components/index/mine'
-  import Radio from '../components/index/radio'
+  import Rank from '../components/index/rank'
+  import Recomand from '../components/index/recomand'
+  import Search from '../components/index/search'
 
   export default class Index extends wepy.page {
     config = {
-      navigationBarTitleText: '音乐'
+      navigationBarTitleText: '在线音乐'
     }
     data = {
       activeMenu:0
     }
     components = {
-      header: Header, 
       subHeader: SubHeader,
-      discover:Discover,
-      radio:Radio,
-      mine:Mine
+      rank:Rank,
+      recomand:Recomand,
+      search:Search
     }
     mixins = [Urls]
     events={

@@ -2,12 +2,12 @@
 
 </style>
 <template>
-  <view class="radio">radio</view>
+  <view class="mine">mine</view>
 </template>
 <script>
   import wepy from 'wepy'
 
-  export default class Radio extends wepy.component {
+  export default class Recomand extends wepy.component {
     
   }
 </script>

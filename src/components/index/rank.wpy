@@ -1,0 +1,14 @@
+<style lang="less">
+
+</style>
+<template>
+  <view>排行榜</view>
+</template>
+<script>
+  import wepy from 'wepy'
+  import Urls from '../../mixins/urls';
+
+  export default class Rank extends wepy.component {
+    
+  }
+</script>

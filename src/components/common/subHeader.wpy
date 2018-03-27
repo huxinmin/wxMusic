@@ -41,9 +41,9 @@
     data = {
       barLeft: "3.5%",
       nav:[
-        {name:"发现"},
-        {name:"我的"},
-        {name:"电台"}
+        {name:"排行榜"},
+        {name:"推荐"},
+        {name:"搜索"}
       ],
       activeNav:0
     }
