@@ -49,11 +49,10 @@
 </style>
 <template>
   <view class="rank-list" >
-    <view>{{rankDetail[id].name}}</view>
     <image mode="widthFix" src="{{rankDetail[id].coverImgUrl}}" ></image>
     <view class="rank-songs-group">
       <repeat for="{{rankDetail[id].tracks}}" key="index" index="index" item="item">
-        <view class="rank-songs-item" data-index="{{index}}" id="{{item.id}}" data-name="{{item.name}}" data-imgurl="{{item.al.picUrl}}" @tap="navigateTo">
+        <view class="rank-songs-item" data-index="{{id}}" id="{{item.id}}" @tap="navigateTo">
           <view class="song-index">{{index}}</view>
           <view class="song-info">
             <image src="{{item.al.picUrl}}" lazy-load class="song-thumbnail" mode="widthFix"></image>
@@ -92,10 +91,8 @@
     mixins = [Urls]
     methods ={
       navigateTo(ev){
-        let dataset = ev.currentTarget.dataset;
-        console.log(ev)
         wepy.navigateTo({
-          url: 'play?id='+ev.currentTarget.id+"&name="+dataset.name+"&index="+dataset.index+"&imgUrl="+dataset.imgurl
+          url: 'play?id='+ev.currentTarget.id+"&index="+ev.currentTarget.dataset.index
         })
       }
     }

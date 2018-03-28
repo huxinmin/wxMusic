@@ -22,3 +22,4 @@ node app.js
 6. data-xxx属性不能使用大写或者驼峰式写法，会被转换成小写
 7: Object.assig只能进行浅拷贝，无法进行深拷贝，假如源对象的属性值是一个指向对象的引用，它也只拷贝那个引用值。
 8: reducer中的state对象为引用对象时需要返回一个新对象，否则无法触发view重新渲染，例如数组就需要slice拷贝一份
+9: redux-actions中的creatAction的types的名字不能一样否则会全部都dispatch

@@ -3,9 +3,9 @@
 </style>
 <template>
   <view class="container">
-    <image src="{{imgUrl}}"></image>
+    <image src="{{rankDetail[index].tracks[id].album.picUrl}}"></image>
     <text>{{music.name}}</text>
-    <audio poster="{{imgUrl}}" name="{{name}}" src="{{url}}" id="myAudio" controls loop></audio>
+    <audio poster="{{rankDetail[index].tracks[id].album.picUrl}}" name="{{rankDetail[index].tracks[id].name}}" src="{{play.url}}" id="myAudio" controls loop></audio>
 
     <button type="primary" bindtap="audioPlay">播放</button>
     <button type="primary" bindtap="audioPause">暂停</button>
@@ -17,12 +17,25 @@
 <script>
   import wepy from 'wepy'
   import Urls from '../mixins/urls';
+  import { connect, getStore } from 'wepy-redux'
+  import { GET, NEXT, PREV } from '../store/types/play'
+  import { getPlay } from '../store/actions/play'
+
+  @connect({
+    rankDetail (state) {
+      return state.rankDetail.rankDetail
+    },
+    play (state){
+      return state.play.play
+    }
+  },{
+    getPlay
+  })
 
   export default class Fm extends wepy.page {
     data = {
-      imgUrl:"",
-      name:{},
-      url:"",
+      index:0,
+      id:0,
       audioCtx:""
     }
     mixins = [Urls]
@@ -42,19 +55,14 @@
      }
     }
     onLoad(option){
-      let self= this;
+      console.log("play onload")
+      this.id = option.id;
+      this.index = option.index;
       let url = this.baseUrl+"/music/url?id="+option.id;
-      wepy.setNavigationBarTitle({title: option.name})
-      this.imgUrl = option.imgUrl
-      this.name = option.name
-      console.log(url)
-      console.log(option)
-      wepy.request(url).then((res)=>{
-        console.log(res)
-        self.url = res.data.data[0].url;
-        self.$apply();
-      });
-      this.audioCtx = wx.createAudioContext('myAudio')
+      // const store = getStore()
+      // store.dispatch(getPlay(url,this.id))
+      this.audioCtx = wepy.createAudioContext('myAudio')
+      wepy.setNavigationBarTitle({title: this.rankDetail[this.index].tracks[this.id].name})
     }
 }
 </script>

@@ -1,16 +1,16 @@
 import { handleActions } from 'redux-actions'
-import { GET, NEXT, PREV } from '../types/play'
+import { GETPLAY, NEXTPLAY, PREVPLAY } from '../types/play'
 
 export default handleActions({
-  [GET] (state, action) {
-    // console.log(action)
-    // console.log(state)
+  [GETPLAY] (state, action) {
+    console.log(action)
+    console.log(state)
     return {
       ...state,
-      play: action.payload.data
+      play: action.payload.data[0].url
     }
   },
-  [NEXT] (state, action) {
+  [NEXTPLAY] (state, action) {
     return {
       ...state,
       play: action.payload

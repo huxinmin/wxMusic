@@ -1,5 +1,5 @@
-export const GET = 'GET'
+export const GETPLAY = 'GETPLAY'
 
-export const NEXT = 'NEXT'
+export const NEXTPLAY = 'NEXTPLAY'
 
-export const PREV = 'PREV'
+export const PREVPLAY = 'PREVPLAY'
