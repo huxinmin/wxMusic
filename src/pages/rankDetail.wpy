@@ -49,10 +49,10 @@
 </style>
 <template>
   <view class="rank-list" >
-    <view @tap="get('55')">{{rankDetail.name}}</view>
-    <!-- <image mode="widthFix" src="{{img}}" ></image>
+    <view>{{rankDetail[id].name}}</view>
+    <image mode="widthFix" src="{{rankDetail[id].coverImgUrl}}" ></image>
     <view class="rank-songs-group">
-      <repeat for="{{songs}}" key="index" index="index" item="item">
+      <repeat for="{{rankDetail[id].tracks}}" key="index" index="index" item="item">
         <view class="rank-songs-item" data-index="{{index}}" id="{{item.id}}" data-name="{{item.name}}" data-imgurl="{{item.al.picUrl}}" @tap="navigateTo">
           <view class="song-index">{{index}}</view>
           <view class="song-info">
@@ -65,7 +65,7 @@
           <image class="play" mode="widthFix" src="../assets/images/play.png"></image>
         </view>
       </repeat>
-    </view> -->
+    </view>
   </view>
 </template>
 
@@ -86,9 +86,8 @@
   
 
   export default class Rank extends wepy.page {
-    data = {
-      img:"",
-      songs:[]
+    data= {
+      id:0
     }
     mixins = [Urls]
     methods ={
@@ -102,17 +101,18 @@
     }
 
     onLoad(option){
-      // let self= this;
-      // let url = this.baseUrl+"/top/list?idx="+option.id;
-      const store = getStore()
-      store.dispatch(getRankDetail("url"))
-      // wepy.setNavigationBarTitle({title: option.name})
-      // wepy.request(url).then((res) => {
-      //   console.log(res)
-      //   self.img = res.data.playlist.coverImgUrl;
-      //   self.songs = res.data.playlist.tracks;
-      //   self.$apply();
-      // });
+      this.id = option.id;
+      let url = this.baseUrl+"/top/list?idx="+this.id;
+      console.log(this.id)
+      console.log(this.rankDetail)
+      console.log(this.rankDetail[this.id])
+      if(JSON.stringify(this.rankDetail[this.id]) == "{}"){
+        console.log("----")
+        const store = getStore()
+        store.dispatch(getRankDetail(url,this.id))
+      }
+      console.log(this.rankDetail)
+      wepy.setNavigationBarTitle({title:this.rankDetail[this.id].name })
     }
 }
 </script>

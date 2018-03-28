@@ -3,9 +3,13 @@ import { GET, REFRESH } from '../types/rankDetail'
 
 export default handleActions({
   [GET] (state, action) {
+    // console.log(action)
+    // console.log(state)
+    let { rankDetail } = state;
+    rankDetail[action.payload.id] = action.payload.data;
     return {
       ...state,
-      rankDetail: {name:"33"+action.payload}
+      rankDetail: rankDetail.slice()
     }
   },
   [REFRESH] (state, action) {
@@ -15,5 +19,5 @@ export default handleActions({
     }
   }
 }, {
-  rankDetail:{name:"sd"}
+  rankDetail:[{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}]
 })
