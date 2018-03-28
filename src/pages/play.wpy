@@ -1,9 +1,24 @@
 <style lang="less">
-  
+  .play{
+    .blur{
+      position:fixed;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      filter:blur(40rpx);
+      z-index: -1;
+    }
+    .pic{
+      width: 80%;
+      margin: auto;
+    }
+  }
 </style>
 <template>
-  <view class="container">
-    <image src="{{rankDetail[index].tracks[number].album.picUrl}}"></image>
+  <view class="play">
+    <image mode="widthFix" class="pic" src="{{rankDetail[index].tracks[number].album.picUrl}}"></image>
+    <image class="blur" src="{{rankDetail[index].tracks[number].album.picUrl}}"></image>
     <text>{{music.name}}</text>
     <audio poster="{{rankDetail[index].tracks[number].album.picUrl}}" name="{{rankDetail[index].tracks[number].name}}" src="{{play}}" id="myAudio" controls loop></audio>
 
