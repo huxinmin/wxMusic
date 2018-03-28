@@ -6,8 +6,8 @@ export const getPlay = createAction(GETPLAY, (url,id) => {
 	console.log(url)
 	return new Promise(resolve => {
 		wepy.request(url).then((res)=>{
-			console.log(res.data.result)
-			resolve({data:res.data.result, id:id})
+			console.log(res.data.data)
+			resolve({data:res.data.data, id:id})
 		})
   	})
 })

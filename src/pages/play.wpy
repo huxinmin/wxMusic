@@ -3,9 +3,9 @@
 </style>
 <template>
   <view class="container">
-    <image src="{{rankDetail[index].tracks[id].album.picUrl}}"></image>
+    <image src="{{rankDetail[index].tracks[number].album.picUrl}}"></image>
     <text>{{music.name}}</text>
-    <audio poster="{{rankDetail[index].tracks[id].album.picUrl}}" name="{{rankDetail[index].tracks[id].name}}" src="{{play.url}}" id="myAudio" controls loop></audio>
+    <audio poster="{{rankDetail[index].tracks[number].album.picUrl}}" name="{{rankDetail[index].tracks[number].name}}" src="{{play}}" id="myAudio" controls loop></audio>
 
     <button type="primary" bindtap="audioPlay">播放</button>
     <button type="primary" bindtap="audioPause">暂停</button>
@@ -36,6 +36,7 @@
     data = {
       index:0,
       id:0,
+      number:0,
       audioCtx:""
     }
     mixins = [Urls]
@@ -58,11 +59,12 @@
       console.log("play onload")
       this.id = option.id;
       this.index = option.index;
+      this.number = option.number;
       let url = this.baseUrl+"/music/url?id="+option.id;
-      // const store = getStore()
-      // store.dispatch(getPlay(url,this.id))
+      const store = getStore()
+      store.dispatch(getPlay(url,this.id))
       this.audioCtx = wepy.createAudioContext('myAudio')
-      wepy.setNavigationBarTitle({title: this.rankDetail[this.index].tracks[this.id].name})
+      wepy.setNavigationBarTitle({title: this.rankDetail[this.index].tracks[this.number].name})
     }
 }
 </script>

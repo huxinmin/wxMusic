@@ -52,7 +52,7 @@
     <image mode="widthFix" src="{{rankDetail[id].coverImgUrl}}" ></image>
     <view class="rank-songs-group">
       <repeat for="{{rankDetail[id].tracks}}" key="index" index="index" item="item">
-        <view class="rank-songs-item" data-index="{{id}}" id="{{item.id}}" @tap="navigateTo">
+        <view class="rank-songs-item" data-index="{{id}}" id="{{item.id}}" data-number="{{index}}" @tap="navigateTo">
           <view class="song-index">{{index}}</view>
           <view class="song-info">
             <image src="{{item.al.picUrl}}" lazy-load class="song-thumbnail" mode="widthFix"></image>
@@ -92,7 +92,7 @@
     methods ={
       navigateTo(ev){
         wepy.navigateTo({
-          url: 'play?id='+ev.currentTarget.id+"&index="+ev.currentTarget.dataset.index
+          url: 'play?id='+ev.currentTarget.id+"&index="+ev.currentTarget.dataset.index+"&number="+ev.currentTarget.dataset.number
         })
       }
     }
