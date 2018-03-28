@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux'
-import counter from './counter'
+import rankList from './rankList'
+import rankDetail from './rankDetail'
 
 export default combineReducers({
-  counter
+  rankList, rankDetail
 })

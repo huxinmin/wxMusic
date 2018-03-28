@@ -19,3 +19,4 @@ node app.js
 3. scroll-view 中的需要滑动的元素要用 dislay:inline-block; 进行元素的横向编排；
 4. 包裹 scroll-view 的大盒子有明确的宽和加上样式-->  overflow:hidden;white-space:nowrap;
 5. swiper组件必须放在最外层，并且不能使用任何嵌套，无法内嵌组件
+6. data-xxx属性不能使用大写或者驼峰式写法，会被转换成小写

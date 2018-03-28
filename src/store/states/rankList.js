@@ -1,8 +1,6 @@
-import wepy from 'wepy'
-
-export default class LocalData extends wepy.mixin {
-  data = {
-    rank:[{name:"云音乐新歌榜"},{name:"云音乐热歌榜"},{name:"网易原创歌曲榜"},
+export const rankList = 
+		[
+		  {name:"云音乐新歌榜"},{name:"云音乐热歌榜"},{name:"网易原创歌曲榜"},
 		  {name:"云音乐飙升榜"},{name:"云音乐电音榜"},{name:"UK排行榜周榜"},
 		  {name:"美国Billboard周榜"},{name:"KTV嗨榜"},{name:"iTunes榜"},{name:"Hit FM Top榜"},
 		  {name:"日本Oricon周榜"},{name:"韩国Melon排行榜周榜"},{name:"韩国Mnet排行榜周榜"},
@@ -11,5 +9,3 @@ export default class LocalData extends wepy.mixin {
 		  {name:"法国 NRJ EuroHot 30周榜"},{name:"台湾Hito排行榜"},
 		  {name:"Beatport全球电子舞曲榜"},{name:"云音乐ACG音乐榜"},{name:"云音乐嘻哈榜"}
 		]
-  }
-}

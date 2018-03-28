@@ -23,7 +23,7 @@
 <template>
   <view class="rank-group">
   	<repeat for="{{rank}}" key="index" index="index" item="item">
-  		<view class="rank-item" data-name="{{item.name}}" data-index="{{index}}" @tap="navigateTo">
+  		<view class="rank-item" data-index="{{index}}" @tap="navigateTo">
   		  <text>{{item.name}}</text>
   		  <image src="../../assets/images/rightArrow.png"></image>
   		</view>
@@ -32,15 +32,20 @@
 </template>
 <script>
   import wepy from 'wepy'
-  import LocalData from '../../mixins/localData';
+  import { connect } from 'wepy-redux'
+
+  @connect({
+    rank (state) {
+      return state.rankList.rankList
+    }
+  })
 
   export default class Rank extends wepy.component {
-    mixins = [LocalData]
     methods ={
     	navigateTo(ev){
     		let dataset = ev.currentTarget.dataset;
     		wepy.navigateTo({
- 				url: 'rank?id='+dataset.index+"&name="+dataset.name
+ 				url: 'rankDetail?id='+dataset.index
 			})
     	}
     }

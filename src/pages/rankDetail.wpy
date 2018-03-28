@@ -48,11 +48,12 @@
   }
 </style>
 <template>
-  <view class="rank-list">
-    <image mode="widthFix" src="{{img}}"></image>
+  <view class="rank-list" >
+    <view @tap="get('55')">{{rankDetail.name}}</view>
+    <!-- <image mode="widthFix" src="{{img}}" ></image>
     <view class="rank-songs-group">
       <repeat for="{{songs}}" key="index" index="index" item="item">
-        <view class="rank-songs-item" data-index="{{index}}" id="{{item.id}}" data-name="{{item.name}}" data-imgUrl="{{item.al.picUrl}}" @tap="navigateTo">
+        <view class="rank-songs-item" data-index="{{index}}" id="{{item.id}}" data-name="{{item.name}}" data-imgurl="{{item.al.picUrl}}" @tap="navigateTo">
           <view class="song-index">{{index}}</view>
           <view class="song-info">
             <image src="{{item.al.picUrl}}" lazy-load class="song-thumbnail" mode="widthFix"></image>
@@ -64,13 +65,25 @@
           <image class="play" mode="widthFix" src="../assets/images/play.png"></image>
         </view>
       </repeat>
-    </view>
+    </view> -->
   </view>
 </template>
 
 <script>
   import wepy from 'wepy'
   import Urls from '../mixins/urls';
+  import { connect, getStore } from 'wepy-redux'
+  import { GET, REFRESH } from '../store/types/rankDetail'
+  import { getRankDetail } from '../store/actions/rankDetail'
+
+  @connect({
+    rankDetail (state) {
+      return state.rankDetail.rankDetail
+    }
+  },{
+    getRankDetail
+  })
+  
 
   export default class Rank extends wepy.page {
     data = {
@@ -83,21 +96,23 @@
         let dataset = ev.currentTarget.dataset;
         console.log(ev)
         wepy.navigateTo({
-          url: 'play?id='+ev.currentTarget.id+"&name="+dataset.name+"&index="+dataset.index+"&imgUrl="+dataset.imgUrl
+          url: 'play?id='+ev.currentTarget.id+"&name="+dataset.name+"&index="+dataset.index+"&imgUrl="+dataset.imgurl
         })
       }
     }
 
     onLoad(option){
-      let self= this;
-      let url = this.baseUrl+"/top/list?idx="+option.id;
-      wepy.setNavigationBarTitle({title: option.name})
-      wepy.request(url).then((res) => {
-        console.log(res)
-        self.img = res.data.playlist.coverImgUrl;
-        self.songs = res.data.playlist.tracks;
-        self.$apply();
-      });
+      // let self= this;
+      // let url = this.baseUrl+"/top/list?idx="+option.id;
+      const store = getStore()
+      store.dispatch(getRankDetail("url"))
+      // wepy.setNavigationBarTitle({title: option.name})
+      // wepy.request(url).then((res) => {
+      //   console.log(res)
+      //   self.img = res.data.playlist.coverImgUrl;
+      //   self.songs = res.data.playlist.tracks;
+      //   self.$apply();
+      // });
     }
 }
 </script>
