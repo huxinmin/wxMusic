@@ -11,21 +11,63 @@
     }
     .pic{
       width: 80%;
-      margin: auto;
+      margin-left: 10%;
+      margin-top:40rpx;
+    }
+    .song-name{
+      color:white;
+      width:100%;
+      text-align:center;
+    }
+    .play-progress{
+      slider{
+        width:60%;
+        margin-left:20%;
+      }
+    }
+    .play-controls{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding-left:40rpx;
+      padding-right:40rpx;
+      .prev{
+        rotate:180deg;
+        width:80rpx;
+        height:80rpx;
+      }
+      .next{
+        width:80rpx;
+        height:80rpx;
+      }
+      .pauses{
+        width:100rpx;
+        height:100rpx;
+      }
+      .play{
+        width:100rpx;
+        height:100rpx;
+      }
     }
   }
 </style>
 <template>
   <view class="play">
-    <image mode="widthFix" class="pic" src="{{rankDetail[index].tracks[number].album.picUrl}}"></image>
-    <image class="blur" src="{{rankDetail[index].tracks[number].album.picUrl}}"></image>
-    <text>{{music.name}}</text>
-    <audio poster="{{rankDetail[index].tracks[number].album.picUrl}}" name="{{rankDetail[index].tracks[number].name}}" src="{{play}}" id="myAudio" controls loop></audio>
-
-    <button type="primary" bindtap="audioPlay">播放</button>
-    <button type="primary" bindtap="audioPause">暂停</button>
-    <button type="primary" bindtap="audio14">设置当前播放时间为14秒</button>
-    <button type="primary" bindtap="audioStart">回到开头</button>
+    <view>{{play}}</view>
+    <image mode="widthFix" class="pic" src="{{track.album.picUrl}}"></image>
+    <image class="blur" src="{{track.album.picUrl}}"></image>
+    <view class="song-name">{{track.album.name}}</view>
+    <view class="play-progress">
+      <text>{{playedTime}}</text>
+      <slider block-size="12" bindchange="slider3change" bindchange="{{changePlay}}"/>
+      <text>{{duration}}</text>
+    </view>
+    <view class="play-controls">
+      <image class="prev" src="../assets/images/right.png"></image>
+      <image style="display:{{isPlaying?'block':'none'}}" class="pauses" src="../assets/images/pauses.png"></image>
+      <image style="display:{{isPlaying?'none':'block'}}" class="play" src="../assets/images/plays.png"></image>
+      <image class="next" src="../assets/images/right.png"></image>
+    </view>
   </view>
 </template>
 
@@ -49,9 +91,11 @@
 
   export default class Fm extends wepy.page {
     data = {
-      index:0,
+      playedTime:0,
+      isPlaying:true,
+      duration:0,
       id:0,
-      number:0,
+      track:{},
       audioCtx:""
     }
     mixins = [Urls]
@@ -63,23 +107,43 @@
       audioPause() {
         this.audioCtx.pause()
       },
-      audio14() {
-        this.audioCtx.seek(14)
-      },
-      audioStart() {
-        this.audioCtx.seek(0)
-     }
+      changePlay(ev){
+        console.log(ev)
+      }
+    }
+    watch = {
+      play (newValue, oldValue){
+        console.log(this.play)
+        this.audioCtx.src = this.play;
+        this.audioCtx.title = this.track.album.name;
+        this.audioCtx.singer = this.track.artists[0].name;
+        this.audioCtx.coverImgUrl  = this.track.album.picUrl;
+        console.log(this.audioCtx.src)
+        console.log(this.audioCtx.currentTime)
+        console.log(this.audioCtx.duration)
+      }
     }
     onLoad(option){
-      console.log("play onload")
+      let self = this;
+      console.log(this.play)
       this.id = option.id;
-      this.index = option.index;
-      this.number = option.number;
       let url = this.baseUrl+"/music/url?id="+option.id;
       const store = getStore()
       store.dispatch(getPlay(url,this.id))
-      this.audioCtx = wepy.createAudioContext('myAudio')
-      wepy.setNavigationBarTitle({title: this.rankDetail[this.index].tracks[this.number].name})
+
+      this.track = this.rankDetail[option.index].tracks[option.number]
+      this.audioCtx = wepy.getBackgroundAudioManager()
+      console.log(this.play)
+      // console.log(this.audioCtx)
+      // this.playedTime = this.audioCtx.currentTime
+      // this.duration = this.audioCtx.duration
+      // console.log(this.audioCtx.currentTime)
+      // console.log(this.audioCtx.duration)
+      // console.log(this.audioCtx.paused)
+      // this.isPlaying = !this.audioCtx.paused
+      
+      
+      // wepy.setNavigationBarTitle({title: this.track.album.name})
     }
 }
 </script>

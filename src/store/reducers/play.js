@@ -17,5 +17,5 @@ export default handleActions({
     }
   }
 }, {
-  play:{}
+  play:""
 })
