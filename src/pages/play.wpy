@@ -18,11 +18,20 @@
       color:white;
       width:100%;
       text-align:center;
+      margin-top: 40rpx;
     }
     .play-progress{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+      padding-left: 40rpx;
+      padding-right: 40rpx;
+      margin:40rpx 0;
+      font-size: 30rpx;
       slider{
         width:60%;
-        margin-left:20%;
+        flex-shrink:1;
       }
     }
     .play-controls{
@@ -33,12 +42,12 @@
       padding-right:40rpx;
       .prev{
         rotate:180deg;
-        width:80rpx;
-        height:80rpx;
+        width:60rpx;
+        height:60rpx;
       }
       .next{
-        width:80rpx;
-        height:80rpx;
+        width:60rpx;
+        height:60rpx;
       }
       .pauses{
         width:100rpx;
@@ -57,15 +66,15 @@
     <image class="blur" src="{{track.al.picUrl}}"></image>
     <view class="song-name">{{track.al.name}}</view>
     <view class="play-progress">
-      <text>{{playedTime}}</text>
-      <slider block-size="12" bindchange="slider3change" bindchange="{{changePlay}}"/>
-      <text>{{duration}}</text>
+      <text class="playedTime">{{playedTime}}</text>
+      <slider bindchange="changePlay" value="{{value}}" block-size="12" bindchange="slider3change" bindchange="{{changePlay}}"/>
+      <text class="duration">{{duration}}</text>
     </view>
     <view class="play-controls">
-      <image class="prev" src="../assets/images/right.png"></image>
-      <image @tap="audioPlay" style="display:{{isPlaying?'block':'none'}}" class="pauses" src="../assets/images/pauses.png"></image>
+      <image @tap="prev" class="prev" src="../assets/images/right.png"></image>
+      <image @tap="audioPause" style="display:{{isPlaying?'block':'none'}}" class="pauses" src="../assets/images/pauses.png"></image>
       <image @tap="audioPlay" style="display:{{isPlaying?'none':'block'}}" class="play" src="../assets/images/plays.png"></image>
-      <image class="next" src="../assets/images/right.png"></image>
+      <image @tap="next" class="next" src="../assets/images/right.png"></image>
     </view>
   </view>
 </template>
@@ -93,9 +102,12 @@
   export default class Fm extends wepy.page {
     data = {
       playedTime:"00:00",
+      value:0,
       isPlaying:true,
       duration:"00:00",
       id:0,
+      index:0,
+      number:0,
       track:{},
       audioCtx:""
     }
@@ -104,16 +116,23 @@
     methods = {
       audioPlay() {
         this.audioCtx.play()
-        console.log(this.audioCtx)
-        console.log(this.audioCtx.src)
-        console.log(this.audioCtx.currentTime)
-        console.log(this.audioCtx.duration)
+        this.isPlaying = true;
       },
       audioPause() {
         this.audioCtx.pause()
+        this.isPlaying = false;
       },
       changePlay(ev){
-        console.log(ev)
+        let pos = (ev.detail.value/100)*this.audioCtx.duration
+        this.audioCtx.seek(pos)
+      },
+      prev(){
+        console.log("prev")
+        this.number = this.number>1?parseInt(this.number) -1: 0;
+      },
+      next(){
+        console.log("next")
+        this.number = this.number < this.rankDetail[this.index].tracks.length ?parseInt(this.number) +1: this.number;
       }
     }
     formatTime(time){
@@ -130,6 +149,7 @@
           console.log(self.audioCtx.duration)
           self.playedTime = self.formatTime(self.audioCtx.currentTime)
           self.duration = self.formatTime(self.audioCtx.duration)
+          self.value = Math.floor(self.audioCtx.currentTime/self.audioCtx.duration)*100
           self.$apply();
         })
     }
@@ -149,7 +169,23 @@
       },
       track(newValue, oldValue){
         wepy.setNavigationBarTitle({title: newValue.name})
+      },
+      number(newValue, oldValue){
+        console.log("number changed")
+        console.log(newValue)
+        console.log(oldValue)
+        this.track = this.rankDetail[this.index].tracks[newValue]
+        this.id = this.track.id;
+        this.dispatchGetPlay()
       }
+    }
+    dispatchGetPlay(){
+      console.log("dispatchGetPlay")
+      console.log(this.id)
+      console.log(this.track)
+      let url = this.baseUrl+"/music/url?id="+this.id;
+      const store = getStore()
+      store.dispatch(getPlay(url,this.id))
     }
     onLoad(option){
       let self = this;
@@ -160,19 +196,34 @@
       console.log("play page onLoad")
       console.log("play this.play")
       console.log(this.play)
-      this.id = option.id;
-      let url = this.baseUrl+"/music/url?id="+option.id;
-      const store = getStore()
-      store.dispatch(getPlay(url,this.id))
+      this.index = option.index;
+      this.number = option.number;
+      this.track = this.rankDetail[this.index].tracks[this.number]
+      this.id = this.track.id;
+      this.dispatchGetPlay();
       console.log("audioCtx")
       this.audioCtx = this.$parent.globalData.audioManager;
-      console.log(this.audioCtx)
-      this.track = this.rankDetail[option.index].tracks[option.number]
-      console.log(this.rankDetail)
       console.log("track is")
       console.log(this.track)
       this.updateTime();
-      
+      this.audioCtx.onPlay(()=>{
+        self.isPlaying = true;
+      })
+      this.audioCtx.onPause(()=>{
+        self.isPlaying = false;
+      })
+      this.audioCtx.onStop(()=>{
+
+      })
+      this.audioCtx.onEnded(()=>{
+
+      })
+      this.audioCtx.onPrev(()=>{
+
+      })
+      this.audioCtx.onNext(()=>{
+
+      })
     }
 }
 </script>

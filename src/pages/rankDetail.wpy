@@ -94,7 +94,7 @@
     methods ={
       navigateTo(ev){
         wepy.navigateTo({
-          url: 'play?id='+ev.currentTarget.id+"&index="+ev.currentTarget.dataset.index+"&number="+ev.currentTarget.dataset.number
+          url: 'play?index='+ev.currentTarget.dataset.index+"&number="+ev.currentTarget.dataset.number
         })
       }
     }
