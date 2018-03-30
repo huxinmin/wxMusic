@@ -7,7 +7,7 @@ export default handleActions({
     console.log(state)
     return {
       ...state,
-      play: action.payload.data[0].url
+      play: action.payload.data.data[0].url
     }
   },
   [NEXTPLAY] (state, action) {

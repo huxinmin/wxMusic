@@ -38,6 +38,13 @@ export default class extends wepy.app {
     }
   }
 
+  globalData = {
+    audioManager:{}
+  }
+  onShow(){
+    this.globalData.audioManager = wepy.getBackgroundAudioManager()
+  }
+
   constructor () {
     super()
     this.use('requestfix')

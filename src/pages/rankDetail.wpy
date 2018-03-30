@@ -77,6 +77,8 @@
 
   @connect({
     rankDetail (state) {
+      console.log("rankDetail connect")
+      console.log(state)
       return state.rankDetail.rankDetail
     }
   },{
@@ -97,19 +99,21 @@
       }
     }
 
+    watch = {
+      rankDetail(newValue, oldValue){
+        wepy.setNavigationBarTitle({title:this.rankDetail[this.id].name })
+      }
+    }
+
     onLoad(option){
-      this.id = option.id;
+      this.id = parseInt(option.id);
       let url = this.baseUrl+"/top/list?idx="+this.id;
-      console.log(this.id)
-      console.log(this.rankDetail)
-      console.log(this.rankDetail[this.id])
+      console.log("rankDetail page onload")
       if(JSON.stringify(this.rankDetail[this.id]) == "{}"){
         console.log("----")
         const store = getStore()
         store.dispatch(getRankDetail(url,this.id))
       }
-      console.log(this.rankDetail)
-      wepy.setNavigationBarTitle({title:this.rankDetail[this.id].name })
     }
 }
 </script>

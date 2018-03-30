@@ -53,10 +53,9 @@
 </style>
 <template>
   <view class="play">
-    <view>{{play}}</view>
-    <image mode="widthFix" class="pic" src="{{track.album.picUrl}}"></image>
-    <image class="blur" src="{{track.album.picUrl}}"></image>
-    <view class="song-name">{{track.album.name}}</view>
+    <image mode="widthFix" class="pic" src="{{track.al.picUrl}}"></image>
+    <image class="blur" src="{{track.al.picUrl}}"></image>
+    <view class="song-name">{{track.al.name}}</view>
     <view class="play-progress">
       <text>{{playedTime}}</text>
       <slider block-size="12" bindchange="slider3change" bindchange="{{changePlay}}"/>
@@ -64,8 +63,8 @@
     </view>
     <view class="play-controls">
       <image class="prev" src="../assets/images/right.png"></image>
-      <image style="display:{{isPlaying?'block':'none'}}" class="pauses" src="../assets/images/pauses.png"></image>
-      <image style="display:{{isPlaying?'none':'block'}}" class="play" src="../assets/images/plays.png"></image>
+      <image @tap="audioPlay" style="display:{{isPlaying?'block':'none'}}" class="pauses" src="../assets/images/pauses.png"></image>
+      <image @tap="audioPlay" style="display:{{isPlaying?'none':'block'}}" class="play" src="../assets/images/plays.png"></image>
       <image class="next" src="../assets/images/right.png"></image>
     </view>
   </view>
@@ -80,6 +79,8 @@
 
   @connect({
     rankDetail (state) {
+      console.log("play @connect")
+      console.log(state)
       return state.rankDetail.rankDetail
     },
     play (state){
@@ -91,9 +92,9 @@
 
   export default class Fm extends wepy.page {
     data = {
-      playedTime:0,
+      playedTime:"00:00",
       isPlaying:true,
-      duration:0,
+      duration:"00:00",
       id:0,
       track:{},
       audioCtx:""
@@ -103,6 +104,10 @@
     methods = {
       audioPlay() {
         this.audioCtx.play()
+        console.log(this.audioCtx)
+        console.log(this.audioCtx.src)
+        console.log(this.audioCtx.currentTime)
+        console.log(this.audioCtx.duration)
       },
       audioPause() {
         this.audioCtx.pause()
@@ -111,39 +116,63 @@
         console.log(ev)
       }
     }
+    formatTime(time){
+      var min = Math.floor(parseInt(time)/60)
+      var sec = Math.floor(parseInt(time)%60)
+      return (min< 10? "0"+min: min) + ":" + (sec<10?"0"+sec: sec)
+    }
+    updateTime(){
+        let self = this;
+        this.audioCtx.onTimeUpdate(()=>{
+          console.log("console audio src currentTime duration in onTimeUpdate")
+          console.log(self.audioCtx.src)
+          console.log(self.audioCtx.currentTime)
+          console.log(self.audioCtx.duration)
+          self.playedTime = self.formatTime(self.audioCtx.currentTime)
+          self.duration = self.formatTime(self.audioCtx.duration)
+          self.$apply();
+        })
+    }
     watch = {
       play (newValue, oldValue){
+        console.log("play page watch")
+        console.log("newValue")
+        console.log(newValue)
+        console.log("oldValue")
+        console.log(oldValue)
         console.log(this.play)
-        this.audioCtx.src = this.play;
-        this.audioCtx.title = this.track.album.name;
-        this.audioCtx.singer = this.track.artists[0].name;
-        this.audioCtx.coverImgUrl  = this.track.album.picUrl;
-        console.log(this.audioCtx.src)
-        console.log(this.audioCtx.currentTime)
-        console.log(this.audioCtx.duration)
+        this.audioCtx.src = newValue;
+        this.audioCtx.title = this.track.al.name;
+        this.audioCtx.singer = this.track.ar[0].name;
+        this.audioCtx.coverImgUrl  = this.track.al.picUrl;
+        this.isPlaying = !this.audioCtx.paused
+      },
+      track(newValue, oldValue){
+        wepy.setNavigationBarTitle({title: newValue.name})
       }
     }
     onLoad(option){
       let self = this;
+      console.log("this")
+      console.log(this)
+      console.log("parent")
+      console.log(this.$parent)
+      console.log("play page onLoad")
+      console.log("play this.play")
       console.log(this.play)
       this.id = option.id;
       let url = this.baseUrl+"/music/url?id="+option.id;
       const store = getStore()
       store.dispatch(getPlay(url,this.id))
-
+      console.log("audioCtx")
+      this.audioCtx = this.$parent.globalData.audioManager;
+      console.log(this.audioCtx)
       this.track = this.rankDetail[option.index].tracks[option.number]
-      this.audioCtx = wepy.getBackgroundAudioManager()
-      console.log(this.play)
-      // console.log(this.audioCtx)
-      // this.playedTime = this.audioCtx.currentTime
-      // this.duration = this.audioCtx.duration
-      // console.log(this.audioCtx.currentTime)
-      // console.log(this.audioCtx.duration)
-      // console.log(this.audioCtx.paused)
-      // this.isPlaying = !this.audioCtx.paused
+      console.log(this.rankDetail)
+      console.log("track is")
+      console.log(this.track)
+      this.updateTime();
       
-      
-      // wepy.setNavigationBarTitle({title: this.track.album.name})
     }
 }
 </script>

@@ -24,3 +24,5 @@ node app.js
 8: reducer中的state对象为引用对象时需要返回一个新对象，否则无法触发view重新渲染，例如数组就需要slice拷贝一份
 9: redux-actions中的creatAction的types的名字不能一样否则会全部都dispatch
 10: 可以使用自定义编译模式配置使得修改内容后不会再跳转到首页，而是跳到需要调试的页面
+11: getBackgroundAudioManager方法官方说存在合法的src值就能获取，经测试无法立即取得，在onPlay函数也取不到，可以在onTimeUpdate中取得
+12: 在onload中虽然能够打印出来connect的state的实时的新值,但是如果取值赋值的话还是之前的老的值不是新的值,也就是redux的state全局是唯一的不变的
