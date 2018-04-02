@@ -1,15 +1,14 @@
 <style lang="less">
-	.recomand-list{
-		.recomand-songs-item{
-			display: flex;
-      		padding-left: 40rpx;
-      		padding-right: 40rpx;
-     		 justify-content: space-between;
-      		align-items: center;
-     		 height:160rpx;
+	.rank-songs-item{
+      display: flex;
+      padding-left: 40rpx;
+      padding-right: 40rpx;
+      justify-content: space-between;
+      align-items: center;
+      height:160rpx;
       border-bottom:solid 4rpx #d9dadc;
-		}
-		 .song-thumbnail{
+    }
+    .song-thumbnail{
       width:80rpx;
       height:80rpx;
     }
@@ -42,12 +41,11 @@
     .song-info-right{
       width: 360rpx;
     }
-	}
 </style>
 <template>
-  <view class="recomand recomand-list">
+  <view class="recomand">
   	<repeat for="{{recomand}}" key="index" index="index" item="item">
-  		<view class="recomand-songs-item"  id="{{item.id}}" data-number="{{index}}" @tap="navigateTo">
+  		<view class="rank-songs-item"  id="{{item.id}}" data-number="{{index}}" @tap="navigateTo">
           <view class="song-index">{{index}}</view>
           <view class="song-info">
             <image src="{{item.song.album.picUrl}}" lazy-load class="song-thumbnail" mode="widthFix"></image>

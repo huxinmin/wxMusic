@@ -1,13 +1,105 @@
 <style lang="less">
-
+	.rank-songs-item{
+      display: flex;
+      padding-left: 40rpx;
+      padding-right: 40rpx;
+      justify-content: space-between;
+      align-items: center;
+      height:160rpx;
+      border-bottom:solid 4rpx #d9dadc;
+    }
+    .song-thumbnail{
+      width:80rpx;
+      height:80rpx;
+    }
+    .play{
+      width:48rpx;
+      height:48rpx;
+    }
+    .song-name{
+      font-size:40rpx;
+      width: 100%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      height: 50rpx;
+    }
+    .song-artist{
+      font-size:30rpx;
+      color:#78797b;
+    }
+    .song-index{
+      width:80rpx;
+      color: #999;
+    }
+    .song-info{
+      width:460rpx;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .song-info-right{
+      width: 360rpx;
+    }
+    .search-btn{
+      background:#d33a32;
+      color:white;
+      font-size:32rpx;
+    }
+    .search{
+      padding:0 40rpx;
+    }
+    .search-input{
+      margin-bottom:40rpx;
+      border-bottom:solid 1px #d33a32;
+      height:72rpx;
+    }
 </style>
 <template>
-  <view class="search">搜索</view>
+  <view class="search">
+  	<input bindinput="setSearchVal" class="search-input" placeholder="输入关键字" focus type="text" placeholder-style="color:#d33a32"/>
+  	<button class="search-btn" @tap="search">立即搜索</button>
+  	<view class="search-result">
+  		<repeat for="{{songs}}" key="index" index="index" item="item">
+  		<view class="rank-songs-item"  id="{{item.id}}" data-number="{{index}}" @tap="navigateTo">
+          <view class="song-index">{{index}}</view>
+          <view class="song-info">
+            <image src="{{item.song.album.picUrl}}" lazy-load class="song-thumbnail" mode="widthFix"></image>
+            <view class="song-info-right">
+              <view class="song-name">{{item.name}}</view>
+             <text class="song-artist">{{item.song.artists[0].name}}</text>
+            </view>
+          </view>
+          <image class="play" mode="widthFix" src="../../assets/images/play.png"></image>
+        </view>
+  	  </repeat>
+  	</view>
+  </view>
 </template>
 <script>
   import wepy from 'wepy'
+  import Urls from '../../mixins/urls';
 
   export default class Search extends wepy.component {
-    
+  	data = {
+  		searchVal:"",
+  		songs:[]
+  	}
+  	mixins = [Urls]
+    methods={
+    	setSearchVal(ev){
+    		this.searchVal = ev.detail.value;
+    	},
+    	search(){
+        if(!this.searchVal.length){return}
+    		let url = this.baseUrl+"/search?keywords="+ this.searchVal;
+    		let self = this;
+    		wepy.request(url).then((res)=>{
+    			console.log(res)
+    			self.songs = res.data.result.songs;
+    			self.$apply();
+    		});
+    	}
+    }
   }
 </script>

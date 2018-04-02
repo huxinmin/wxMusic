@@ -1,6 +1,5 @@
 <style lang="less">
-  .rank-list{
-    image{
+    .rank-list-img{
       width:100%;
     }
     .rank-songs-item{
@@ -45,11 +44,10 @@
     .song-info-right{
       width: 360rpx;
     }
-  }
 </style>
 <template>
   <view class="rank-list" >
-    <image mode="widthFix" src="{{rankDetail[id].coverImgUrl}}" ></image>
+    <image class="rank-list-img" mode="widthFix" src="{{rankDetail[id].coverImgUrl}}" ></image>
     <view class="rank-songs-group">
       <repeat for="{{rankDetail[id].tracks}}" key="index" index="index" item="item">
         <view class="rank-songs-item" data-index="{{id}}" id="{{item.id}}" data-number="{{index}}" @tap="navigateTo">
