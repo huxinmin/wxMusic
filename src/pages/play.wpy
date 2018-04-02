@@ -99,7 +99,7 @@
     getPlay
   })
 
-  export default class Fm extends wepy.page {
+  export default class Play extends wepy.page {
     data = {
       playedTime:"00:00",
       value:0,

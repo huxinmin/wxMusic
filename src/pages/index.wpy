@@ -1,10 +1,4 @@
 <style lang="less">
-  .show{
-    display:block;
-  }
-  .hide{
-    display:none;
-  }
   .scroll-view_H{
     width: 100%;
     overflow:hidden;
@@ -14,9 +8,11 @@
 <template>
   <view class="container">
     <subHeader />
-    <rank class="{{activeMenu==0?'show':'hide'}}"/>
-    <recomand class="{{activeMenu==1?'show':'hide'}}"/>
-    <search class="{{activeMenu==2?'show':'hide'}}"/>
+    <scroll-view scroll-y style="height:{{windowHeight - 50}}px">
+      <rank hidden="{{activeMenu==0?false:true}}"/>
+      <recomand hidden="{{activeMenu==1?false:true}}" />
+      <search hidden="{{activeMenu==2?false:true}}" />
+    </scroll-view>
   </view>
 </template>
 
@@ -33,7 +29,8 @@
       navigationBarTitleText: '在线音乐'
     }
     data = {
-      activeMenu:0
+      activeMenu:0,
+      windowHeight:0
     }
     components = {
       subHeader: SubHeader,
@@ -44,6 +41,12 @@
     mixins = [Urls]
     methods = {
      
+    }
+    onLoad(){
+      let self = this;
+      wepy.getSystemInfo().then((res)=>{
+        self.windowHeight = res.windowHeight;
+      })
     }
     events={
       switchMenu:(index, $event)=>{

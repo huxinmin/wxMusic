@@ -1,13 +1,93 @@
 <style lang="less">
-
+	.recomand-list{
+		.recomand-songs-item{
+			display: flex;
+      		padding-left: 40rpx;
+      		padding-right: 40rpx;
+     		 justify-content: space-between;
+      		align-items: center;
+     		 height:160rpx;
+      border-bottom:solid 4rpx #d9dadc;
+		}
+		 .song-thumbnail{
+      width:80rpx;
+      height:80rpx;
+    }
+    .play{
+      width:48rpx;
+      height:48rpx;
+    }
+    .song-name{
+      font-size:40rpx;
+      width: 100%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      height: 50rpx;
+    }
+    .song-artist{
+      font-size:30rpx;
+      color:#78797b;
+    }
+    .song-index{
+      width:80rpx;
+      color: #999;
+    }
+    .song-info{
+      width:460rpx;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .song-info-right{
+      width: 360rpx;
+    }
+	}
 </style>
 <template>
-  <view class="recomand">每日推荐</view>
+  <view class="recomand recomand-list">
+  	<repeat for="{{recomand}}" key="index" index="index" item="item">
+  		<view class="recomand-songs-item"  id="{{item.id}}" data-number="{{index}}" @tap="navigateTo">
+          <view class="song-index">{{index}}</view>
+          <view class="song-info">
+            <image src="{{item.song.album.picUrl}}" lazy-load class="song-thumbnail" mode="widthFix"></image>
+            <view class="song-info-right">
+              <view class="song-name">{{item.name}}</view>
+             <text class="song-artist">{{item.song.artists[0].name}}</text>
+            </view>
+          </view>
+          <image class="play" mode="widthFix" src="../../assets/images/play.png"></image>
+        </view>
+  	</repeat>
+  </view>
 </template>
 <script>
   import wepy from 'wepy'
+  import Urls from '../../mixins/urls';
+  import { connect, getStore } from 'wepy-redux'
+  import { getRecomand } from '../../store/actions/recomand'
+
+   @connect({
+    recomand (state) {
+      return state.recomand.recomand
+    }
+  })
 
   export default class Recomand extends wepy.component {
-    
+  	mixins = [Urls]
+  	methods = {
+  	  navigateTo(ev){
+        wepy.navigateTo({
+          url: 'play?index='+ev.currentTarget.dataset.index+"&number="+ev.currentTarget.dataset.number
+        })
+      }
+  	}
+    onLoad(){
+    	console.log("recomand onload")
+    	let url = this.baseUrl+"/personalized/newsong";
+    	const store = getStore()
+        store.dispatch(getRecomand(url))
+    }
+
   }
 </script>
