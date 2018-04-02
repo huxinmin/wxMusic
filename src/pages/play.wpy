@@ -1,5 +1,6 @@
 <style lang="less">
   .play{
+    height:100%;
     .blur{
       position:fixed;
       left: 0;
@@ -41,7 +42,6 @@
       padding-left:40rpx;
       padding-right:40rpx;
       .prev{
-        rotate:180deg;
         width:60rpx;
         height:60rpx;
       }
@@ -62,16 +62,16 @@
 </style>
 <template>
   <view class="play">
-    <image mode="widthFix" class="pic" src="{{track.al.picUrl}}"></image>
-    <image class="blur" src="{{track.al.picUrl}}"></image>
-    <view class="song-name">{{track.al.name}}</view>
+    <image mode="widthFix" class="pic" src="{{songImg}}"></image>
+    <image class="blur" src="{{songImg}}"></image>
+    <view class="song-name">{{songTitle}}</view>
     <view class="play-progress">
       <text class="playedTime">{{playedTime}}</text>
       <slider bindchange="changePlay" value="{{value}}" block-size="12" bindchange="slider3change" bindchange="{{changePlay}}"/>
       <text class="duration">{{duration}}</text>
     </view>
     <view class="play-controls">
-      <image @tap="prev" class="prev" src="../assets/images/right.png"></image>
+      <image @tap="prev" class="prev" src="../assets/images/left.png"></image>
       <image @tap="audioPause" style="display:{{isPlaying?'block':'none'}}" class="pauses" src="../assets/images/pauses.png"></image>
       <image @tap="audioPlay" style="display:{{isPlaying?'none':'block'}}" class="play" src="../assets/images/plays.png"></image>
       <image @tap="next" class="next" src="../assets/images/right.png"></image>
@@ -85,31 +85,39 @@
   import { connect, getStore } from 'wepy-redux'
   import { GET, NEXT, PREV } from '../store/types/play'
   import { getPlay } from '../store/actions/play'
+  import { setPlayList } from '../store/actions/playList'
 
   @connect({
-    rankDetail (state) {
-      console.log("play @connect")
+    playList (state) {
+      console.log("play @connect playList")
       console.log(state)
-      return state.rankDetail.rankDetail
+      return state.playList.playList
+    },
+    currentPlayIndex(state){
+      console.log("play @connect currentPlayIndex")
+      console.log(state)
+      return state.playList.currentPlayIndex
     },
     play (state){
       return state.play.play
     }
   },{
-    getPlay
+    getPlay,
+    setPlayList
   })
 
   export default class Play extends wepy.page {
     data = {
       playedTime:"00:00",
+      songImg:"",
+      songTitle:"",
       value:0,
       isPlaying:true,
       duration:"00:00",
       id:0,
       index:0,
-      number:0,
       track:{},
-      audioCtx:""
+      audioCtx:{}
     }
     mixins = [Urls]
 
@@ -128,11 +136,11 @@
       },
       prev(){
         console.log("prev")
-        this.number = this.number>1?parseInt(this.number) -1: 0;
+        this.index = this.index>1?parseInt(this.index) -1: 0;
       },
       next(){
         console.log("next")
-        this.number = this.number < this.rankDetail[this.index].tracks.length ?parseInt(this.number) +1: this.number;
+        this.index = this.index < this.playList.length ?parseInt(this.index) +1: this.index;
       }
     }
     formatTime(time){
@@ -161,20 +169,24 @@
         console.log("oldValue")
         console.log(oldValue)
         console.log(this.play)
+        console.log(this.track)
         this.audioCtx.src = newValue;
-        this.audioCtx.title = this.track.al.name;
-        this.audioCtx.singer = this.track.ar[0].name;
-        this.audioCtx.coverImgUrl  = this.track.al.picUrl;
+        this.songTitle = this.track.al? this.track.al.name : this.track.album.name;
+        this.audioCtx.title = this.songTitle;
+        this.audioCtx.singer = this.track.ar? this.track.ar[0].name : this.track.artists[0].name;
+        this.songImg = this.track.al? this.track.al.picUrl :this.track.album.picUrl?this.track.album.picUrl:"../assets/images/default.jpg";
+        this.audioCtx.coverImgUrl  = this.songImg;
+        console.log(this.songImg)
         this.isPlaying = !this.audioCtx.paused
       },
       track(newValue, oldValue){
         wepy.setNavigationBarTitle({title: newValue.name})
       },
-      number(newValue, oldValue){
+      index(newValue, oldValue){
         console.log("number changed")
         console.log(newValue)
         console.log(oldValue)
-        this.track = this.rankDetail[this.index].tracks[newValue]
+        this.track = this.playList[this.index]
         this.id = this.track.id;
         this.dispatchGetPlay()
       }
@@ -187,18 +199,15 @@
       const store = getStore()
       store.dispatch(getPlay(url,this.id))
     }
-    onLoad(option){
+    onLoad(){
       let self = this;
-      console.log("this")
-      console.log(this)
-      console.log("parent")
-      console.log(this.$parent)
       console.log("play page onLoad")
       console.log("play this.play")
       console.log(this.play)
-      this.index = option.index;
-      this.number = option.number;
-      this.track = this.rankDetail[this.index].tracks[this.number]
+      this.index = this.currentPlayIndex
+      this.track = this.playList[this.index].song ? this.playList[this.index].song : this.playList[this.index]
+      console.log(this.playList)
+      console.log(this.currentPlayIndex)
       this.id = this.track.id;
       this.dispatchGetPlay();
       console.log("audioCtx")

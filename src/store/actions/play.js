@@ -1,4 +1,4 @@
-import { GETPLAY, NEXTPLAY, PREVPLAY } from '../types/play'
+import { GETPLAY } from '../types/play'
 import { createAction } from 'redux-actions'
 import wepy from 'wepy'
 

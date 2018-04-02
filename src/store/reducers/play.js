@@ -1,5 +1,5 @@
 import { handleActions } from 'redux-actions'
-import { GETPLAY, NEXTPLAY, PREVPLAY } from '../types/play'
+import { GETPLAY } from '../types/play'
 
 export default handleActions({
   [GETPLAY] (state, action) {
@@ -8,12 +8,6 @@ export default handleActions({
     return {
       ...state,
       play: action.payload.data.data[0].url
-    }
-  },
-  [NEXTPLAY] (state, action) {
-    return {
-      ...state,
-      play: action.payload
     }
   }
 }, {

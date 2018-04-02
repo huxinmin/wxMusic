@@ -3,8 +3,9 @@ import { GET, REFRESH } from '../types/rankDetail'
 
 export default handleActions({
   [GET] (state, action) {
-    // console.log(action)
-    // console.log(state)
+    console.log("rankDetail reducers")
+    console.log(action)
+    console.log(state)
     let { rankDetail } = state;
     rankDetail[action.payload.id] = action.payload.data;
     return {

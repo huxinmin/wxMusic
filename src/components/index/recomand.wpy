@@ -45,7 +45,7 @@
 <template>
   <view class="recomand">
   	<repeat for="{{recomand}}" key="index" index="index" item="item">
-  		<view class="rank-songs-item"  id="{{item.id}}" data-number="{{index}}" @tap="navigateTo">
+  		<view class="rank-songs-item"  id="{{item.id}}" data-index="{{index}}" @tap="navigateTo">
           <view class="song-index">{{index}}</view>
           <view class="song-info">
             <image src="{{item.song.album.picUrl}}" lazy-load class="song-thumbnail" mode="widthFix"></image>
@@ -64,19 +64,31 @@
   import Urls from '../../mixins/urls';
   import { connect, getStore } from 'wepy-redux'
   import { getRecomand } from '../../store/actions/recomand'
+  import { setPlayList } from '../../store/actions/playList'
 
-   @connect({
+  @connect({
     recomand (state) {
+      console.log("recomand connect")
+      console.log(state)
       return state.recomand.recomand
     }
+  },{
+    getRecomand,
+    setPlayList
   })
 
   export default class Recomand extends wepy.component {
   	mixins = [Urls]
   	methods = {
   	  navigateTo(ev){
+        let self = this;
+        console.log("navigateTo")
+        console.log(ev)
+        console.log(self.recomand)
+        const store = getStore()
+        store.dispatch(setPlayList(self.recomand,ev.currentTarget.dataset.index))
         wepy.navigateTo({
-          url: 'play?index='+ev.currentTarget.dataset.index+"&number="+ev.currentTarget.dataset.number
+          url: 'play'
         })
       }
   	}
@@ -84,7 +96,7 @@
     	console.log("recomand onload")
     	let url = this.baseUrl+"/personalized/newsong";
     	const store = getStore()
-        store.dispatch(getRecomand(url))
+      store.dispatch(getRecomand(url))
     }
 
   }

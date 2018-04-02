@@ -50,7 +50,7 @@
     <image class="rank-list-img" mode="widthFix" src="{{rankDetail[id].coverImgUrl}}" ></image>
     <view class="rank-songs-group">
       <repeat for="{{rankDetail[id].tracks}}" key="index" index="index" item="item">
-        <view class="rank-songs-item" data-index="{{id}}" id="{{item.id}}" data-number="{{index}}" @tap="navigateTo">
+        <view class="rank-songs-item" id="{{item.id}}" data-index="{{index}}" @tap="navigateTo">
           <view class="song-index">{{index}}</view>
           <view class="song-info">
             <image src="{{item.al.picUrl}}" lazy-load class="song-thumbnail" mode="widthFix"></image>
@@ -72,6 +72,7 @@
   import { connect, getStore } from 'wepy-redux'
   import { GET, REFRESH } from '../store/types/rankDetail'
   import { getRankDetail } from '../store/actions/rankDetail'
+  import { setPlayList } from '../store/actions/playList'
 
   @connect({
     rankDetail (state) {
@@ -80,7 +81,8 @@
       return state.rankDetail.rankDetail
     }
   },{
-    getRankDetail
+    getRankDetail,
+    setPlayList
   })
   
 
@@ -91,8 +93,13 @@
     mixins = [Urls]
     methods ={
       navigateTo(ev){
+        let self = this;
+        console.log("navigateTo")
+        console.log(ev)
+        const store = getStore()
+        store.dispatch(setPlayList(self.rankDetail[self.id].tracks,ev.currentTarget.dataset.index))
         wepy.navigateTo({
-          url: 'play?index='+ev.currentTarget.dataset.index+"&number="+ev.currentTarget.dataset.number
+          url: 'play'
         })
       }
     }

@@ -57,11 +57,11 @@
 </style>
 <template>
   <view class="search">
-  	<input bindinput="setSearchVal" class="search-input" placeholder="输入关键字" focus type="text" placeholder-style="color:#d33a32"/>
+  	<input bindinput="setSearchVal" class="search-input" placeholder="输入关键字" type="text" placeholder-style="color:#d33a32"/>
   	<button class="search-btn" @tap="search">立即搜索</button>
   	<view class="search-result">
   		<repeat for="{{songs}}" key="index" index="index" item="item">
-  		<view class="rank-songs-item"  id="{{item.id}}" data-number="{{index}}" @tap="navigateTo">
+  		<view class="rank-songs-item"  id="{{item.id}}" data-index="{{index}}" @tap="navigateTo">
           <view class="song-index">{{index}}</view>
           <view class="song-info">
             <image src="{{item.song.album.picUrl}}" lazy-load class="song-thumbnail" mode="widthFix"></image>
@@ -79,6 +79,13 @@
 <script>
   import wepy from 'wepy'
   import Urls from '../../mixins/urls';
+  import { setPlayList } from '../../store/actions/playList'
+  import { connect, getStore } from 'wepy-redux'
+
+  @connect({
+  },{
+    setPlayList
+  })
 
   export default class Search extends wepy.component {
   	data = {
@@ -87,6 +94,16 @@
   	}
   	mixins = [Urls]
     methods={
+      navigateTo(ev){
+        let self = this;
+        console.log("navigateTo")
+        console.log(ev)
+        const store = getStore()
+        store.dispatch(setPlayList(self.songs,ev.currentTarget.dataset.index))
+        wepy.navigateTo({
+          url: 'play'
+        })
+      },
     	setSearchVal(ev){
     		this.searchVal = ev.detail.value;
     	},
