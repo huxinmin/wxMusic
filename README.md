@@ -1,6 +1,5 @@
-# wxMusic
+# wxMusic<img src="./icon.png" style="width:40px;height:40px;"/>
 微信小程序音乐，仿照的是网易云的安卓客户端APP  
-![icon](./icon.png)  
 ![license](	https://img.shields.io/github/license/mashape/apistatus.svg)     ![author](https://img.shields.io/badge/author-huxinmin-brightgreen.svg)
 
 ## 效果预览
@@ -23,8 +22,8 @@ wepy build --watch
 然后打开微信小程序客户端开发工具，将`dist`目录作为项目根目录，即可运行(如果运行不成功注意勾选项目编译选项，比如ES6转ES5，不进行域名合法校验等)
 
 ## 依赖
-`wepy`腾讯的开源小程序框架
-`NeteaseCloudMusicApi`第三方的网易云音乐 Nodejs API，地址为[`NeteaseCloudMusicApi`](https://github.com/Binaryify/NeteaseCloudMusicApi)
+- `wepy`腾讯的开源小程序框架
+- `NeteaseCloudMusicApi`第三方的网易云音乐 Nodejs API，地址为[`NeteaseCloudMusicApi`](https://github.com/Binaryify/NeteaseCloudMusicApi)
 
 ## 学到的知识点
 1. `scroll-view` 中的需要滑动的元素不可以用 `float` 浮动；
