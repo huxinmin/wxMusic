@@ -1,5 +1,6 @@
-# wxMusic<img src="./icon.png" style="width:40px;height:40px;"/>
+# wxMusic<img src="./icon.png" style="width:30px;height:30px;"/>
 微信小程序音乐，仿照的是网易云的安卓客户端APP  
+
 ![license](	https://img.shields.io/github/license/mashape/apistatus.svg)     ![author](https://img.shields.io/badge/author-huxinmin-brightgreen.svg)
 
 ## 效果预览
