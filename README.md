@@ -1,10 +1,10 @@
 # wxMusic
-微信小程序音乐，仿照的是网易云的安卓客户端APP
-![icon](./icon.png)
+微信小程序音乐，仿照的是网易云的安卓客户端APP  
+![icon](./icon.png)  
 ![license](	https://img.shields.io/github/license/mashape/apistatus.svg)     ![author](https://img.shields.io/badge/author-huxinmin-brightgreen.svg)
 
 ## 效果预览
-![预览](./preview.png)
+![预览](./preview.gif)
 
 ## 使用方法
 将server目录拷贝放在你的域名服务器上，进入server端，运行
